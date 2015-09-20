@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 public class AudioRecorderService extends Service {
     private static final String TAG                 = "AudioRecorderService";
-    private static final int    CHUNK_LENGTH_MS     = 15 * 1000; // fifteen seconds
+    private static final int    CHUNK_LENGTH_MS     = 10 * 1000; // ten seconds
     private static final int    AMPLITUDE_THRESHOLD = 20000;
 
     private ExtAudioRecorder extAudioRecorder;
