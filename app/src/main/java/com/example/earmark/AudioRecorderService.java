@@ -2,31 +2,31 @@ package com.example.earmark;
 
 import android.app.Service;
 import android.content.Intent;
-import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class AudioRecorderService extends Service {
-    private static final String TAG = "AudioRecorderService";
-    private static final int CHUNK_LENGTH_MS = 15 * 1000; // fifteen seconds
+    private static final String TAG                 = "AudioRecorderService";
+    private static final int    CHUNK_LENGTH_MS     = 15 * 1000; // fifteen seconds
+    private static final int    AMPLITUDE_THRESHOLD = 20000;
 
     private ExtAudioRecorder extAudioRecorder;
 
+    private String path;
     private String fileName;
-    private Timer  timer = new Timer();
+    private Timer timer = new Timer();
 
     public AudioRecorderService() {
-        fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        fileName += "/Monolog/Audio/";
+        path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        path += "/Monolog/Audio/";
 
-        File directory = new File(fileName);
+        File directory = new File(path);
         directory.mkdirs();
     }
 
@@ -64,8 +64,9 @@ public class AudioRecorderService extends Service {
     }
 
     private void startRecording() {
+        fileName = new Date().getTime() + ".wav";
         extAudioRecorder = ExtAudioRecorder.getInstance(false);
-        extAudioRecorder.setOutputFile(fileName + new Date().getTime() + ".wav");
+        extAudioRecorder.setOutputFile(path + fileName);
         extAudioRecorder.prepare();
         extAudioRecorder.start();
 
@@ -79,8 +80,15 @@ public class AudioRecorderService extends Service {
     }
 
     private void stopRecording() {
+        int maxAmplitude = extAudioRecorder.getMaxAmplitude();
         extAudioRecorder.stop();
         extAudioRecorder.release();
         extAudioRecorder = null;
+
+        if (maxAmplitude > AMPLITUDE_THRESHOLD) {
+            // TODO upload file
+        } else {
+            // TODO delete file
+        }
     }
 }
