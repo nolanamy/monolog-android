@@ -85,6 +85,10 @@ public class SearchResultsAdapter extends BaseAdapter {
         }
     }
 
+    public String getPlayingFileName() {
+        return playingFileName;
+    }
+
     public void setPlayingFileName(String fileName) {
         playingFileName = fileName;
         notifyDataSetChanged();
