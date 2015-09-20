@@ -30,6 +30,6 @@ public class UploaderService extends IntentService {
     }
 
     private void uploadFile(String path, String fileName) {
-        // TODO upload file
+        UploaderClient.getInstance().upload(path, fileName);
     }
 }
