@@ -14,8 +14,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class SearchResultsAdapter extends BaseAdapter {
     private static final String TAG = "SearchResultsAdapter";
@@ -61,7 +66,8 @@ public class SearchResultsAdapter extends BaseAdapter {
         TextView textView = (TextView)view.findViewById(R.id.search_list_item_text_view);
         textView.setText(searchResult.text);
 
-        Log.e(TAG, "fN=" + searchResult.fileName + " playingFN=" + playingFileName);
+        TextView dateView = (TextView)view.findViewById(R.id.search_list_item_date_text_view);
+        dateView.setText(prettyDate(searchResult.timestamp));
 
         view.setBackgroundColor(Color.TRANSPARENT);
         if (searchResult.fileName.equals(playingFileName)) {
@@ -76,12 +82,15 @@ public class SearchResultsAdapter extends BaseAdapter {
         String text;
         String afterText;
         String fileName;
+        Date   timestamp;
 
         public SearchResult(String beforeText, String text, String afterText, String fileName) {
             this.beforeText = beforeText;
             this.text = text;
             this.afterText = afterText;
             this.fileName = fileName;
+            String timeLongString = fileName.substring(0, fileName.length() - 4);
+            timestamp = new Date(Long.parseLong(timeLongString));
         }
     }
 
@@ -134,5 +143,55 @@ public class SearchResultsAdapter extends BaseAdapter {
             }
         };
         asyncTask.execute(search);
+    }
+
+    private static String getDayDiffString(Date now, Date before)
+    {
+        if (before == null || now == null || before.after(now))
+        {
+            // TODO handle future dates
+            return "ERROR: before=" + before;
+        }
+        else
+        {
+            String time = new SimpleDateFormat("h:mm aa", Locale.US).format(before);
+
+            if (now.getTime() - before.getTime() < 1000 * 60 * 60 * 24 * 5)
+            {
+                Calendar nowCalendar = new GregorianCalendar();
+                nowCalendar.setTime(now);
+                Calendar beforeCalendar = new GregorianCalendar();
+                beforeCalendar.setTime(before);
+
+                int dayDiff = Math.abs(nowCalendar.get(Calendar.DAY_OF_WEEK) - beforeCalendar.get(Calendar.DAY_OF_WEEK));
+                if (dayDiff == 0)
+                {
+                    return "Today " + time;
+                }
+                else if (dayDiff == 1)
+                {
+                    return "Yesterday " + time;
+                }
+                else
+                {
+                    return beforeCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US) + " " + time;
+                }
+            }
+            else
+            {
+                return new SimpleDateFormat("MM/dd/yy", Locale.US).format(before) + " " + time;
+            }
+        }
+    };
+
+    public static String prettyDate(Date date)
+    {
+        if (date == null)
+        {
+            return "";
+        }
+        Date now = new Date();
+
+        return getDayDiffString(now, date);
     }
 }
