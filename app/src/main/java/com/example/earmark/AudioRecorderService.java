@@ -43,6 +43,7 @@ public class AudioRecorderService extends Service {
     @Override
     public void onDestroy() {
         stopRecording();
+        timer.cancel();
         Log.d(TAG, "onDestroy");
     }
 
@@ -82,7 +83,7 @@ public class AudioRecorderService extends Service {
                 stopRecording();
                 startRecording();
             }
-        }, new Date(new Date().getTime() + CHUNK_LENGTH_MS));
+        }, CHUNK_LENGTH_MS);
     }
 
     private void stopRecording() {
