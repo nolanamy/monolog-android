@@ -9,13 +9,17 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AudioRecorderService extends Service {
     private static final String TAG = "AudioRecorderService";
+    private static final int ONE_MINUTE = 1 * 60 * 1000; // 10 * 1000; <-- ten seconds for debugging
 
     private MediaRecorder mediaRecorder;
 
     private String fileName;
+    private Timer  timer = new Timer();
 
     public AudioRecorderService() {
         fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -55,11 +59,10 @@ public class AudioRecorderService extends Service {
     }
 
     private void startRecording() {
-        Date now = new Date();
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC); // TODO does this not include corded/headset mics?
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        mediaRecorder.setOutputFile(fileName + now.getTime() + ".wav");
+        mediaRecorder.setOutputFile(fileName + new Date().getTime() + ".wav");
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
 
         try {
@@ -69,6 +72,13 @@ public class AudioRecorderService extends Service {
         }
 
         mediaRecorder.start();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                stopRecording();
+                startRecording();
+            }
+        }, new Date(new Date().getTime() + ONE_MINUTE));
     }
 
     private void stopRecording() {
