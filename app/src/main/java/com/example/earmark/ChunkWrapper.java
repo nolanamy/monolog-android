@@ -39,4 +39,16 @@ public class ChunkWrapper {
         realm.commitTransaction();
         return chunkWrapper;
     }
+
+    public void setWatsonResults(String results, Realm realm) {
+        realm.beginTransaction();
+        chunk.setTranscriptionResults(results);
+        realm.commitTransaction();
+    }
+
+    public void setResultsUploaded(Realm realm) {
+        realm.beginTransaction();
+        chunk.setResultsUploaded(true);
+        realm.commitTransaction();
+    }
 }

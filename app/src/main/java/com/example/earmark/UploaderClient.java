@@ -17,6 +17,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import io.realm.Realm;
+
 public class UploaderClient {
     private static final String TAG = "UploaderClient";
 
@@ -61,7 +63,10 @@ public class UploaderClient {
 
             if (response.code() == 200) {
                 String body = response.body().string();
+                Realm realm = Realm.getDefaultInstance();
+                chunkWrapper.setWatsonResults(body, realm);
                 uploadTranscription(chunkWrapper, body);
+                realm.close();
             }
 
         } catch (IOException e) {
@@ -80,6 +85,12 @@ public class UploaderClient {
             Response response = client.newCall(request).execute();
             Log.d(TAG, "Uploaded transcription fileName=" + chunkWrapper.chunk.getFileName() + " status=" + response.code());
             Log.d(TAG, response.body().string());
+
+            if (response.code() == 200) {
+                Realm realm = Realm.getDefaultInstance();
+                chunkWrapper.setResultsUploaded(realm);
+                realm.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return false;
