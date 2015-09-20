@@ -11,6 +11,8 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -30,6 +32,8 @@ public class UploaderClient {
     private static final String WATSON_PASSWORD = "MASKED";
 
     private static final String MONOLOGGR_URL = "http://monologgr.com/upload.ashx";
+
+    private static final String MONOLOGGR_SEARCH_URL = "http://monologgr.com/wordLookup.ashx";
 
     private static UploaderClient instance;
     private OkHttpClient client;
@@ -58,7 +62,7 @@ public class UploaderClient {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            Log.d(TAG, "Uploaded fileName=" + chunkWrapper.chunk.getFileName() + " status=" + response.code());
+            Log.d(TAG, "Uploaded audio; fileName=" + chunkWrapper.chunk.getFileName() + " status=" + response.code());
 //            Log.d(TAG, response.body().string());
 
             if (response.code() == 200) {
@@ -78,12 +82,12 @@ public class UploaderClient {
 
     public boolean uploadTranscription(ChunkWrapper chunkWrapper, String body) {
         Request request = new Request.Builder()
-                .url(MONOLOGGR_URL + "?timestamp=" + formatDate(new Date(chunkWrapper.chunk.getRecorded())) +"&email=" + MonologgrApplication.deviceId + "&volume=" + chunkWrapper.chunk.getMaxAmplitude() + "&passwordHash=placeholder&filename=" + chunkWrapper.chunk.getFileName())
+                .url(MONOLOGGR_URL + "?timestamp=" + formatDate(new Date(chunkWrapper.chunk.getRecorded())) + "&email=" + MonologgrApplication.deviceId + "&volume=" + chunkWrapper.chunk.getMaxAmplitude() + "&passwordHash=placeholder&filename=" + chunkWrapper.chunk.getFileName())
                 .post(RequestBody.create(MEDIA_TYPE_JSON, body))
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            Log.d(TAG, "Uploaded transcription fileName=" + chunkWrapper.chunk.getFileName() + " status=" + response.code());
+            Log.d(TAG, "Uploaded transcription; fileName=" + chunkWrapper.chunk.getFileName() + " status=" + response.code());
             Log.d(TAG, response.body().string());
 
             if (response.code() == 200) {
@@ -96,6 +100,32 @@ public class UploaderClient {
             return false;
         }
         return true;
+    }
+
+    public String search(String search) {
+        String searchEscaped = "";
+        try {
+            searchEscaped = URLEncoder.encode(search, Charset.defaultCharset().name());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Request request = new Request.Builder()
+                .url(MONOLOGGR_SEARCH_URL + "?email=" + MonologgrApplication.deviceId + "&passwordHash=placeholder&q=" + searchEscaped)
+                .get()
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            Log.d(TAG, "Searched; search=" + search + " status=" + response.code());
+
+            if (response.code() == 200) {
+                return response.body().string();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return "";
     }
 
     private static String formatDate(Date date)

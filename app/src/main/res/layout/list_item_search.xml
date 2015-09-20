@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/search_list_item_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="5dp"
+        android:bufferType="spannable" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/poll_list_item_date_text_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/poll_list_item_label_text_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_toLeftOf="@id/poll_list_item_date_text_view"-->
+        <!--android:layout_toRightOf="@id/poll_list_item_image_view"-->
+        <!--android:ellipsize="marquee"-->
+        <!--android:fadingEdge="horizontal"-->
+        <!--android:singleLine="true"-->
+        <!--android:textSize="20sp" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/poll_list_item_number_of_responses_text_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true" />-->
+
+</RelativeLayout>
