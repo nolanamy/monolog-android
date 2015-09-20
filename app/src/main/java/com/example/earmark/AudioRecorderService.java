@@ -15,7 +15,7 @@ import java.util.TimerTask;
 
 public class AudioRecorderService extends Service {
     private static final String TAG = "AudioRecorderService";
-    private static final int ONE_MINUTE = 1 * 60 * 1000; // 10 * 1000; <-- ten seconds for debugging
+    private static final int CHUNK_LENGTH_MS = 15 * 1000; // fifteen seconds
 
     private MediaRecorder mediaRecorder;
 
@@ -82,7 +82,7 @@ public class AudioRecorderService extends Service {
                 stopRecording();
                 startRecording();
             }
-        }, new Date(new Date().getTime() + ONE_MINUTE));
+        }, new Date(new Date().getTime() + CHUNK_LENGTH_MS));
     }
 
     private void stopRecording() {
