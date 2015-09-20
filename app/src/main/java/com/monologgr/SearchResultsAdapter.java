@@ -1,6 +1,7 @@
 package com.monologgr;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ public class SearchResultsAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
 
     private AsyncTask<String, Void, List<SearchResult>> asyncTask;
+
+    private int playingPosition = -1;
 
     public SearchResultsAdapter(Context activityContext) {
         super();
@@ -59,6 +62,13 @@ public class SearchResultsAdapter extends BaseAdapter {
         TextView textView = (TextView)view.findViewById(R.id.search_list_item_text_view);
         textView.setText(searchResult.text);
 
+        Log.e(TAG, "pos=" + position + " playingPos=" + playingPosition);
+
+        view.setBackgroundColor(Color.TRANSPARENT);
+        if (position == playingPosition) {
+            view.setBackgroundColor(Color.argb(255, 0, 176, 240));
+        }
+
         return view;
     }
 
@@ -67,15 +77,18 @@ public class SearchResultsAdapter extends BaseAdapter {
         String text;
         String afterText;
         String fileName;
-        File   file;
 
         public SearchResult(String beforeText, String text, String afterText, String fileName) {
             this.beforeText = beforeText;
             this.text = text;
             this.afterText = afterText;
             this.fileName = fileName;
-//            file.
         }
+    }
+
+    public void setPlayingPosition(int position) {
+        playingPosition = position;
+        notifyDataSetChanged();
     }
 
     public void search(String search) {
