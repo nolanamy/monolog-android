@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
@@ -23,7 +24,10 @@ public class AudioRecorderService extends Service {
 
     public AudioRecorderService() {
         fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        fileName += "/";
+        fileName += "/Monolog/Audio/";
+
+        File directory = new File(fileName);
+        directory.mkdirs();
     }
 
     @Override
