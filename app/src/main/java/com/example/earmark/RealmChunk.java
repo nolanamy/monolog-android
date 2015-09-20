@@ -11,6 +11,7 @@ public class RealmChunk extends RealmObject {
     private int    maxAmplitude;
     private String transcriptionResults;
     private boolean resultsUploaded;
+    private long recorded;
 
     public String getUuid() {
         return uuid;
@@ -50,5 +51,13 @@ public class RealmChunk extends RealmObject {
 
     public void setResultsUploaded(boolean resultsUploaded) {
         this.resultsUploaded = resultsUploaded;
+    }
+
+    public long getRecorded() {
+        return recorded;
+    }
+
+    public void setRecorded(long recorded) {
+        this.recorded = recorded;
     }
 }

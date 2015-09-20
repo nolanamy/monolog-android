@@ -22,6 +22,7 @@ public class AudioRecorderService extends Service {
 
     private String path;
     private String fileName;
+    private Date recorded;
     private Timer timer = new Timer();
 
     public static String getPath() {
@@ -72,7 +73,8 @@ public class AudioRecorderService extends Service {
     }
 
     private void startRecording() {
-        fileName = new Date().getTime() + ".wav";
+        recorded = new Date();
+        fileName = recorded.getTime() + ".wav";
         extAudioRecorder = ExtAudioRecorder.getInstance(false);
         extAudioRecorder.setOutputFile(path + fileName);
         extAudioRecorder.prepare();
@@ -96,7 +98,7 @@ public class AudioRecorderService extends Service {
 
         if (maxAmplitude > AMPLITUDE_THRESHOLD) {
             Log.i(TAG, "uploading maxAmplitude=" + maxAmplitude + " fileName=" + fileName);
-            ChunkWrapper chunkWrapper = ChunkWrapper.create(fileName, maxAmplitude, realm);
+            ChunkWrapper chunkWrapper = ChunkWrapper.create(fileName, maxAmplitude, recorded, realm);
             UploaderService.startFileUpload(getApplicationContext(), chunkWrapper.chunk.getUuid());
         } else {
             Log.i(TAG, "deleting maxAmplitude=" + maxAmplitude + " fileName=" + fileName);

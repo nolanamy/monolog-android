@@ -1,5 +1,6 @@
 package com.example.earmark;
 
+import java.util.Date;
 import java.util.UUID;
 
 import io.realm.Realm;
@@ -29,11 +30,12 @@ public class ChunkWrapper {
         return null;
     }
 
-    public static ChunkWrapper create(String fileName, int maxAmplitude, Realm realm) {
+    public static ChunkWrapper create(String fileName, int maxAmplitude, Date recorded, Realm realm) {
         realm.beginTransaction();
         ChunkWrapper chunkWrapper = new ChunkWrapper(realm);
         chunkWrapper.chunk.setFileName(fileName);
         chunkWrapper.chunk.setMaxAmplitude(maxAmplitude);
+        chunkWrapper.chunk.setRecorded(recorded.getTime());
         realm.commitTransaction();
         return chunkWrapper;
     }
