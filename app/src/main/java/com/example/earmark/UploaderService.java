@@ -4,15 +4,15 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 
-public class UploaderService extends IntentService {
-    private static final String TAG = "UploaderService";
-    private static final String PATH = "path";
-    private static final String FILE_NAME = "fileName";
+import io.realm.Realm;
 
-    public static void startFileUpload(Context context, String path, String fileName) {
+public class UploaderService extends IntentService {
+    private static final String TAG  = "UploaderService";
+    private static final String UUID = "uuid";
+
+    public static void startFileUpload(Context context, String uuid) {
         Intent intent = new Intent(context, UploaderService.class);
-        intent.putExtra(PATH, path);
-        intent.putExtra(FILE_NAME, fileName);
+        intent.putExtra(UUID, uuid);
         context.startService(intent);
     }
 
@@ -23,13 +23,17 @@ public class UploaderService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            final String path = intent.getStringExtra(PATH);
-            final String fileName = intent.getStringExtra(FILE_NAME);
-            uploadFile(path, fileName);
+            Realm realm = Realm.getDefaultInstance();
+            final String uuid = intent.getStringExtra(UUID);
+            ChunkWrapper chunkWrapper = ChunkWrapper.findByUuid(uuid, realm);
+            if (chunkWrapper != null) {
+                uploadFile(chunkWrapper);
+            }
+            realm.close();
         }
     }
 
-    private void uploadFile(String path, String fileName) {
-        UploaderClient.getInstance().upload(path, fileName);
+    private void uploadFile(ChunkWrapper chunkWrapper) {
+        UploaderClient.getInstance().upload(chunkWrapper);
     }
 }

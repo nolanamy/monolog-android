@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.realm.Realm;
+
 public class AudioRecorderService extends Service {
     private static final String TAG                 = "AudioRecorderService";
     private static final int    CHUNK_LENGTH_MS     = 10 * 1000; // ten seconds
@@ -22,12 +24,18 @@ public class AudioRecorderService extends Service {
     private String fileName;
     private Timer timer = new Timer();
 
-    public AudioRecorderService() {
-        path = Environment.getExternalStorageDirectory().getAbsolutePath();
+    public static String getPath() {
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         path += "/Monolog/Audio/";
 
         File directory = new File(path);
         directory.mkdirs();
+
+        return path;
+    }
+
+    public AudioRecorderService() {
+        path = getPath();
     }
 
     @Override
@@ -80,6 +88,7 @@ public class AudioRecorderService extends Service {
     }
 
     private void stopRecording() {
+        Realm realm = Realm.getDefaultInstance();
         int maxAmplitude = extAudioRecorder.getMaxAmplitude();
         extAudioRecorder.stop();
         extAudioRecorder.release();
@@ -87,10 +96,12 @@ public class AudioRecorderService extends Service {
 
         if (maxAmplitude > AMPLITUDE_THRESHOLD) {
             Log.i(TAG, "uploading maxAmplitude=" + maxAmplitude + " fileName=" + fileName);
-            UploaderService.startFileUpload(getApplicationContext(), path, fileName);
+            ChunkWrapper chunkWrapper = ChunkWrapper.create(fileName, maxAmplitude, realm);
+            UploaderService.startFileUpload(getApplicationContext(), chunkWrapper.chunk.getUuid());
         } else {
             Log.i(TAG, "deleting maxAmplitude=" + maxAmplitude + " fileName=" + fileName);
             new File(path + fileName).delete();
         }
+        realm.close();
     }
 }

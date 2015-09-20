@@ -32,18 +32,19 @@ public class UploaderClient {
         client.setReadTimeout(30000, TimeUnit.MILLISECONDS);
     }
 
-    public boolean upload(String path, String fileName) {
-        File file = new File(path + fileName);
+    public boolean upload(ChunkWrapper chunkWrapper) {
+        // TODO check chunkWrapper for status
+        File file = new File(AudioRecorderService.getPath() + chunkWrapper.chunk.getFileName());
 
         Request request = new Request.Builder()
                 .url("MASKED/speech-to-text/api/v1/recognize?continuous=true&timestamps=true&max_alternatives=10&word_confidence=true")
                 .header("Authorization", Credentials.basic("MASKED", "MASKED"))
-                .header("x-monologgr-file-name", fileName)
+                .header("x-monologgr-file-name", chunkWrapper.chunk.getFileName())
                 .post(RequestBody.create(MEDIA_TYPE_WAV, file))
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            Log.d(TAG, "fileName=" + fileName + " status=" + response.code());
+            Log.d(TAG, "fileName=" + chunkWrapper.chunk.getFileName() + " status=" + response.code());
             Log.d(TAG, response.body().string());
         } catch (IOException e) {
             e.printStackTrace();
