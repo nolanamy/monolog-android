@@ -86,9 +86,9 @@ public class AudioRecorderService extends Service {
         extAudioRecorder = null;
 
         if (maxAmplitude > AMPLITUDE_THRESHOLD) {
-            // TODO upload file
+            UploaderService.startFileUpload(getApplicationContext(), path, fileName);
         } else {
-            // TODO delete file
+            new File(path + fileName).delete();
         }
     }
 }
