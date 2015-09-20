@@ -17,7 +17,7 @@ public class AudioRecorderService extends Service {
     private static final String TAG = "AudioRecorderService";
     private static final int CHUNK_LENGTH_MS = 15 * 1000; // fifteen seconds
 
-    private MediaRecorder mediaRecorder;
+    private ExtAudioRecorder extAudioRecorder;
 
     private String fileName;
     private Timer  timer = new Timer();
@@ -64,19 +64,11 @@ public class AudioRecorderService extends Service {
     }
 
     private void startRecording() {
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC); // TODO does this not include corded/headset mics?
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        mediaRecorder.setOutputFile(fileName + new Date().getTime() + ".wav");
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+        extAudioRecorder = ExtAudioRecorder.getInstance(false);
+        extAudioRecorder.setOutputFile(fileName + new Date().getTime() + ".wav");
+        extAudioRecorder.prepare();
+        extAudioRecorder.start();
 
-        try {
-            mediaRecorder.prepare();
-        } catch (IOException e) {
-            Log.e(TAG, "prepare() failed");
-        }
-
-        mediaRecorder.start();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -87,8 +79,8 @@ public class AudioRecorderService extends Service {
     }
 
     private void stopRecording() {
-        mediaRecorder.stop();
-        mediaRecorder.release();
-        mediaRecorder = null;
+        extAudioRecorder.stop();
+        extAudioRecorder.release();
+        extAudioRecorder = null;
     }
 }
