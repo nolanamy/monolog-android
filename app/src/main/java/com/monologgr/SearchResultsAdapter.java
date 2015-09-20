@@ -14,7 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class SearchResultsAdapter extends BaseAdapter {
 
     private AsyncTask<String, Void, List<SearchResult>> asyncTask;
 
-    private int playingPosition = -1;
+    private String playingFileName = "";
 
     public SearchResultsAdapter(Context activityContext) {
         super();
@@ -62,10 +61,10 @@ public class SearchResultsAdapter extends BaseAdapter {
         TextView textView = (TextView)view.findViewById(R.id.search_list_item_text_view);
         textView.setText(searchResult.text);
 
-        Log.e(TAG, "pos=" + position + " playingPos=" + playingPosition);
+        Log.e(TAG, "fN=" + searchResult.fileName + " playingFN=" + playingFileName);
 
         view.setBackgroundColor(Color.TRANSPARENT);
-        if (position == playingPosition) {
+        if (searchResult.fileName.equals(playingFileName)) {
             view.setBackgroundColor(Color.argb(255, 0, 176, 240));
         }
 
@@ -86,8 +85,8 @@ public class SearchResultsAdapter extends BaseAdapter {
         }
     }
 
-    public void setPlayingPosition(int position) {
-        playingPosition = position;
+    public void setPlayingFileName(String fileName) {
+        playingFileName = fileName;
         notifyDataSetChanged();
     }
 

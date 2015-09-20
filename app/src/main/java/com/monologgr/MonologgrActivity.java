@@ -2,7 +2,6 @@ package com.monologgr;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -36,7 +35,7 @@ public class MonologgrActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((SearchResultsAdapter) listView.getAdapter()).setPlayingPosition(position);
+                ((SearchResultsAdapter) listView.getAdapter()).setPlayingFileName(((SearchResultsAdapter) listView.getAdapter()).getItem(position).fileName);
             }
         });
     }
