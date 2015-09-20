@@ -1,5 +1,5 @@
 // from http://i-liger.com/article/android-wav-audio-recording
-package com.example.earmark;
+package com.monologgr;
 
 import java.io.File;
 import java.io.IOException;

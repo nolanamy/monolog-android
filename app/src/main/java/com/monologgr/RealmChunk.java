@@ -1,4 +1,4 @@
-package com.example.earmark;
+package com.monologgr;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

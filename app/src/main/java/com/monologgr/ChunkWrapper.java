@@ -1,4 +1,4 @@
-package com.example.earmark;
+package com.monologgr;
 
 import java.util.Date;
 import java.util.UUID;

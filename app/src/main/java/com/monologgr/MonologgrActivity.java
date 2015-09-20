@@ -1,12 +1,10 @@
-package com.example.earmark;
+package com.monologgr;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
-public class EarmarkActivity extends AppCompatActivity {
+public class MonologgrActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

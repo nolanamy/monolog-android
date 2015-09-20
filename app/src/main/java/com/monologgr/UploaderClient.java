@@ -1,4 +1,4 @@
-package com.example.earmark;
+package com.monologgr;
 
 import android.util.Log;
 

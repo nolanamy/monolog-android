@@ -1,4 +1,4 @@
-package com.example.earmark;
+package com.monologgr;
 
 import android.app.Service;
 import android.content.Intent;
