@@ -1,4 +1,4 @@
-package com.monologgr;
+package com.monologgr.application;
 
 import android.app.Application;
 import android.provider.Settings;

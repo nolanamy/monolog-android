@@ -1,4 +1,4 @@
-package com.monologgr;
+package com.monologgr.models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

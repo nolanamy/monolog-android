@@ -1,7 +1,10 @@
-package com.monologgr;
+package com.monologgr.network;
 
 import android.util.Log;
 
+import com.monologgr.application.MonologgrApplication;
+import com.monologgr.models.ChunkWrapper;
+import com.monologgr.services.AudioRecorderService;
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;

@@ -1,10 +1,13 @@
-package com.monologgr;
+package com.monologgr.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
+
+import com.monologgr.recorder.ExtAudioRecorder;
+import com.monologgr.models.ChunkWrapper;
 
 import java.io.File;
 import java.util.Date;
@@ -22,7 +25,7 @@ public class AudioRecorderService extends Service {
 
     private String path;
     private String fileName;
-    private Date recorded;
+    private Date   recorded;
     private Timer timer = new Timer();
 
     public static String getPath() {

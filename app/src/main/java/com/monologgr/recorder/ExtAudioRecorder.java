@@ -1,5 +1,5 @@
 // from http://i-liger.com/article/android-wav-audio-recording
-package com.monologgr;
+package com.monologgr.recorder;
 
 import java.io.File;
 import java.io.IOException;

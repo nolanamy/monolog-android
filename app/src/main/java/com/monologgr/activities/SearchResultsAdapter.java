@@ -1,14 +1,16 @@
-package com.monologgr;
+package com.monologgr.activities;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.monologgr.R;
+import com.monologgr.network.UploaderClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;

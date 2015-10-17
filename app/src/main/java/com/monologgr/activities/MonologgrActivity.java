@@ -1,4 +1,4 @@
-package com.monologgr;
+package com.monologgr.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+
+import com.monologgr.R;
+import com.monologgr.services.AudioRecorderService;
 
 import java.io.File;
 import java.io.FileInputStream;

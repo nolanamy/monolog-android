@@ -8,19 +8,19 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.monologgr.MonologgrApplication"
+        android:name=".application.MonologgrApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <service
-            android:name="com.monologgr.AudioRecorderService"
+            android:name=".services.AudioRecorderService"
             android:enabled="true"
             android:exported="false" >
         </service>
 
         <activity
-            android:name="com.monologgr.MonologgrActivity"
+            android:name=".activities.MonologgrActivity"
             android:label="@string/title_activity_monologgr" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
         </activity>
 
         <service
-            android:name="com.monologgr.UploaderService"
+            android:name=".services.UploaderService"
             android:exported="false" >
         </service>
     </application>

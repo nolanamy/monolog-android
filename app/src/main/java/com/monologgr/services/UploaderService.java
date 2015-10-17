@@ -1,8 +1,11 @@
-package com.monologgr;
+package com.monologgr.services;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+
+import com.monologgr.network.UploaderClient;
+import com.monologgr.models.ChunkWrapper;
 
 import io.realm.Realm;
 

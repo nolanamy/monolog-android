@@ -6,7 +6,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context="com.monologgr.MonologgrActivity">
+                tools:context="com.monologgr.activities.MonologgrActivity">
 
     <ListView
         android:id="@+id/search_results_list_view"
